@@ -3,7 +3,7 @@
 -- and restore the session for that project (via persistence.nvim).
 --
 -- Default UX:
---   - <leader>fp opens the project picker
+--   - <leader>pp opens the project picker
 --   - <CR> switches to the selected project:
 --       1) optionally writes files (:wa)
 --       2) saves the current session (per-cwd)
@@ -17,7 +17,7 @@ local M = {}
 -- Defaults are merged with user opts in setup() and pick_and_switch().
 local defaults = {
   set_default_keymap = true,
-  keymap = "<leader>fp",
+  keymap = "<leader>pp",
 
   -- Behavior knobs
   save_prompt = true,         -- prompt if there are modified buffers before discarding
