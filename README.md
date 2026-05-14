@@ -5,7 +5,20 @@ Switch between projects in one Neovim instance using:
 - persistence.nvim sessions per project
 
 ## Installation (lazy.nvim)
-
+```lua
+{
+  "jeanbeanie/project-switcher.nvim",
+  dependencies = {
+    "nvim-telescope/telescope.nvim",
+    "ahmedkhalf/project.nvim",
+    "folke/persistence.nvim",
+  },
+  config = function()
+    require("project_switcher").setup()
+  end,
+}
+```
+### Override Example
 ```lua
 {
   "jeanbeanie/project-switcher.nvim",
@@ -16,9 +29,9 @@ Switch between projects in one Neovim instance using:
   },
   config = function()
     require("project_switcher").setup({
-      -- defaults:
-      -- keymap = "<leader>fp",
-      -- save_prompt = true,
+      -- override defaults:
+       keymap = "<leader>fp",
+       save_prompt = false,
     })
   end,
 }
