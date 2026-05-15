@@ -29,7 +29,7 @@ Mapped to `<leader>pp` by default.
 
 If you use **nvim-tree**, this keeps the tree rooted to the newly-selected project after switching.
 
-If you **don’t** use nvim-tree, it’s still safe to leave this enabled (it no-opts). 
+If you **don’t** use nvim-tree, it’s still safe to leave this enabled (it no-ops). 
 You can disable it if you prefer:
 
 ```lua
