@@ -11,6 +11,9 @@
 --       4) clears tabs/buffers (workspace reset)
 --       5) :cd into the new project root
 --       6) loads that project's session
+-- Optional UX:
+--   - If sync_nvim_tree=true (default), the plugin will re-root nvim-tree to the new cwd
+--     so toggling the tree doesn't show the old project's directory.
 
 local M = {}
 
@@ -23,6 +26,9 @@ local defaults = {
   save_prompt = true,         -- prompt if there are modified buffers before discarding
   save_before_switch = true,  -- run :wa before switching (tries to write all files)
   clear_tabs = true,          -- run :tabonly before clearing buffers
+
+  -- Integrations
+  sync_nvim_tree_root = true, -- re-root nvim-tree after changing cwd (safe no-op if not installed)
 }
 
 -- Returns true if any *listed* buffer is still modified.
@@ -68,18 +74,18 @@ function M.pick_and_switch(opts)
         local path = entry and (entry.value or entry.path) or nil
         if not path or path == "" then return end
 
-        -- 1) Save files to disk (like :wa). This does NOT save unnamed/scratch buffers.
+        -- Save files to disk (like :wa). This does NOT save unnamed/scratch buffers.
         if opts.save_before_switch then
           pcall(function() vim.cmd("silent! wa") end)
         end
 
-        -- 2) Save session for current working directory.
+        -- Save session for current working directory.
         -- This stores buffers/tabs/windows so you can come back later.
         pcall(function()
           require("persistence").save()
         end)
 
-        -- 3) If anything is still modified, optionally ask before discarding.
+        -- If anything is still modified, optionally ask before discarding.
         local force_discard = false
         if opts.save_prompt and has_modified_listed_buffers() then
           local choice = vim.fn.confirm(
@@ -93,7 +99,7 @@ function M.pick_and_switch(opts)
           force_discard = true
         end
 
-        -- 4) Clear workspace (tabs + buffers), so you don't "mix" projects.
+        -- Clear workspace (tabs + buffers), so you don't "mix" projects.
         if opts.clear_tabs then
           pcall(function() vim.cmd("silent! tabonly") end)
         end
@@ -105,10 +111,19 @@ function M.pick_and_switch(opts)
           pcall(function() vim.cmd("silent! %bd") end)
         end
 
-        -- 5) Switch to the new project root.
+        -- Switch to the new project root.
         vim.cmd("cd " .. vim.fn.fnameescape(path))
 
-        -- 6) Restore that project's session (per cwd).
+        -- if nvim-tree is installed/open, re-root it to the new cwd.
+        -- This fixes the tree still showing the older project issue after a :cd
+        if opts.sync_nvim_tree then
+          pcall(function()
+            local api = require("nvim-tree.api")
+            api.tree.change_root(vim.loop.cwd())
+          end)
+        end
+
+        -- Restore that project's session (per cwd).
         pcall(function()
           require("persistence").load()
         end)
