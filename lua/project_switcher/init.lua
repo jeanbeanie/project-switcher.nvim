@@ -119,7 +119,7 @@ function M.pick_and_switch(opts)
         if opts.sync_nvim_tree then
           pcall(function()
             local api = require("nvim-tree.api")
-            api.tree.change_root(vim.loop.cwd())
+            api.tree.change_root(path)
           end)
         end
 
