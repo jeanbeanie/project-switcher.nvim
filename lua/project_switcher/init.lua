@@ -115,7 +115,7 @@ function M.pick_and_switch(opts)
         vim.cmd("cd " .. vim.fn.fnameescape(path))
 
         -- if nvim-tree is installed/open, re-root it to the new cwd.
-        -- This fixes the tree still showing the older project issue after a :cd
+        -- This avoids issues with the tree still showing the older project tree after a :cd
         if opts.sync_nvim_tree_root then
           pcall(function()
             local api = require("nvim-tree.api")

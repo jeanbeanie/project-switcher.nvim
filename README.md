@@ -23,6 +23,15 @@ Mapped to `<leader>pp` by default.
 }
 ```
 ### Override Example
+
+
+##### `sync_nvim_tree_root` (default: `true`)
+
+If you use **nvim-tree**, this keeps the tree rooted to the newly-selected project after switching.
+
+If you **don’t** use nvim-tree, it’s still safe to leave this enabled (it no-opts). 
+You can disable it if you prefer:
+
 ```lua
 {
   "jeanbeanie/project-switcher.nvim",
@@ -36,6 +45,7 @@ Mapped to `<leader>pp` by default.
       -- override defaults:
        keymap = "<leader>fp",
        save_prompt = false,
+       sync_nvim_tree_root = false,
     })
   end,
 }
