@@ -1,8 +1,12 @@
 # project-switcher.nvim
 
-Switch between projects in one Neovim instance using:
-- telescope + project.nvim project list
-- persistence.nvim sessions per project
+Quickly switch between projects and restore project sessions in a single Neovim instance.
+Selecting a project changes the working directory and restores that project's session automatically.
+Works by:
+- Browsing projects using Telescope + project.nvim
+- Automatically restoring persistence.nvim sessions per project
+  
+Mapped to `<leader>pp` by default.
 
 ## Installation (lazy.nvim)
 ```lua
